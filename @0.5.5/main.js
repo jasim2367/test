@@ -174,7 +174,22 @@ const jo = {};
     function bz(cH, i) {
         cH[B] = cH[B][D](new ad("(?:^|\\s)" + i + "(?!\\S)"), "")[a8]()
     }
-      function A(cI, cH) {
+    function bw(cH, i) {
+        (J(cH, i) ? bz : I)(cH, i)
+    }
+    function aK(cH, i) {
+        I(cH, "d-block"),
+        a(function() {
+            I(cH, i)
+        }, 100)
+    }
+    function b7(cI, cH, i) {
+        bz(cI, cH),
+        a(function() {
+            bz(cI, "d-block")
+        }, i || 300)
+    }
+    function A(cI, cH) {
         for (var i = 0; i < cI[cx]; i++) {
             if (cI[i] === cH) {
                 return !0
@@ -229,7 +244,14 @@ const jo = {};
         }
         return cI
     }
-      !function(cH) {
+    function an(i) {
+        try {
+            return ax[af](i)
+        } catch (i) {
+            return !1
+        }
+    }
+    !function(cH) {
         var i = new a3;
         i[U] = i[al] = function() {
             cH(2 == i[b1])
@@ -263,7 +285,13 @@ const jo = {};
       , b5 = null !== bC && 1 == bC[bB + aS]("lazy");
     !function(i) {
         M[cc + a4](bV, function() {
-                  }, !1)
+            var cI, cH = this[aF];
+            cH < i && J(cv, "header-hidden") ? cI = a(function() {
+                bz(cv, "header-hidden")
+            }, 500) : i < cH && J(cv, "header-animate") && (b9(cI),
+            I(cv, "header-hidden")),
+            i = cH
+        }, !1)
     }(0);
     var E = function(cK) {
         var cN, cL, cM, i, cI, cJ, cH, cO;
@@ -290,7 +318,12 @@ const jo = {};
             cT[bk + a2]("data-page", cU),
             cU == cS ? I(cT, "jt-btn-primary") : (I(cT, "jt-btn-light hover-btn-primary"),
             cT[cc + a4](G, function(cW) {
-                          })),
+                var cV;
+                cW[ca](),
+                1 == (cO = cT[bB + a2]("data-page")) ? (cV = cI ? aG + "/search" + cN + "?max-results=" + cH + "&page=" + cO : aG,
+                M[bf][X] = cV) : (cV = (cO - 1) * cH,
+                Defer.js(aG + "/feeds/posts/summary/" + cQ + "?start-index=" + cV + "&alt=json&callback=jo." + e + "_date&max-results=1"))
+            })),
             cR[cy](cT),
             cR
         }
@@ -304,33 +337,205 @@ const jo = {};
         cL = cM || cH,
         cO = cP || 1,
         jo[e + "_" + bs] = function(cU) {
-                  ,
+            var cS = cU.feed
+              , i = q(cS.openSearch$totalResults.$t);
+            if (cH < i) {
+                var cU = S(i, cO, cL, 5)
+                  , cR = aQ[bJ]("ul")
+                  , cS = cU.totalPages;
+                1 != cU.currentPage && (i = cJ(cU.currentPage - 1, "", '<svg aria-hidden="true" class="jt-icon"><use xlink:href="#i-arrow-l"/></svg>'),
+                cR[cy](i)),
+                A(cU.pages, 1) || (cV = cJ(1, cU.currentPage, "1 . ."),
+                cR[cy](cV));
+                for (var cT = 0; cT < cU.pages[cx]; cT++) {
+                    var cV = cJ(cU.pages[cT], cU.currentPage);
+                    cR[cy](cV)
+                }
+                A(cU.pages, cS) || (cV = cJ(cS, cU.currentPage, ". . " + cS),
+                cR[cy](cV)),
+                cU.currentPage != cS && (cS = cJ(cU.currentPage + 1, "", '<svg aria-hidden="true" class="jt-icon"><use xlink:href="#i-arrow-r"/></svg>'),
+                cR[cy](cS)),
+                cK[be] = "",
+                I(cR, "pagination mb-0"),
+                cK[cy](cR),
+                bz(cK, "visually-hidden")
+            }
+        }
+        ,
         jo[e + "_date"] = function(i) {
-                  ) : bz(cK, "visually-hidden")
+            i = i.feed.entry[0],
+            i = (i = i.published.$t[bc](0, 19) + i.published.$t[bc](23, 29))[D]("+", "%2B"),
+            i = aG + "/search" + cN + "?updated-max=" + i + "&max-results=" + cL + "&page=" + cO;
+            M[bf][X] = i
+        }
+        ) : bz(cK, "visually-hidden")
     };
-              jo[ct] = function(cM) {
-                    ;
+    function b3(cI, cH) {
+        var i = new bX;
+        i[bY](bB, cI),
+        i[cr](bx, P),
+        i[bh](null),
+        i[cc + a4](cD, function() {
+            var cJ = i[aD][aI](/<title>(.*?)<\/title>/);
+            cH[be] = cJ[1][D](br + cn, "")
+        })
+    }
+    jo[ct] = function(cM) {
+        var cH = aH()
+          , cL = cM[bB + a2]("data-label")
+          , cJ = cM[bB + a2]("data-title")
+          , cQ = cM[bB + a2]("data-items")
+          , cK = cM[bB + a2]("data-shuffle")
+          , cI = cM[bB + a2]("data-no-item")
+          , i = cM[bB + a2]("data-func")
+          , cP = cM[bB + a2]("data-callback")
+          , cR = cI ? q(cQ) + 1 : cQ
+          , cN = cL || cM[be]
+          , cO = cN[bb](",")
+          , cL = ""
+          , cL = 1 < cO[cx] ? cN ? "-/" + bP(cO[b0[aj](b0[bl]() * cO[cx])]) + "/?" : "?" : cN && cN != x ? "-/" + bP(cN[a8]()) + "/?" : "?";
+        Defer.js(aG + "/feeds/posts/summary/" + cL + "alt=json&callback=jo." + k + "_" + bs + "_" + cH + "&max-results=" + cR),
+        jo[k + "_" + bs + "_" + cH] = function(cX) {
+            var c1 = q(cX.feed.openSearch$totalResults.$t)
+              , cZ = cX.feed.category;
+            if (0 < c1) {
+                for (var c0 = {
+                    title: cJ,
+                    posts: [],
+                    categories: cZ
+                }, cS = cX.feed.entry, cU = 0, cV = 0; cV < cS[cx]; ++cV) {
+                    var cT, c2, cY = cS[cV], cW = cY.link[cY.link[cx] - 1][X];
+                    if (cU == cQ) {
+                        break
+                    }
+                    cW != cI && (cU++,
+                    (cT = {}).grup_id = cH,
+                    cT.url = cW,
+                    cT.title = cY[aT].$t,
+                    cT.summary = cY.summary.$t[a8](),
+                    cT.img = cY.media$thumbnail && cY.media$thumbnail.url,
+                    cT.author = cY.author[0].name.$t,
+                    cT.comment = cY.thr$total && cY.thr$total.$t,
+                    cT.label = cY.category,
+                    c2 = cY.published.$t,
+                    cY = (cW = new cb(c2))[bB + aa](),
+                    c2 = cW[bB + a9]() + 1,
+                    cW = cW[bB + a7](),
+                    cT.date = cW + "/" + c2 + "/" + cY,
+                    c0.posts[aq](cT))
+                }
+                cX = M[i];
+                typeof cX === bq && 0 < c0.posts[cx] && (cK && (c0.posts = cs(c0.posts)[bF](0, cK)),
+                cM[be] = cX(c0)[a8](),
+                bz(cM, "visually-hidden"),
+                Defer.dom(".lazy-" + cH, 1, "loaded", E),
+                !cP || typeof (cX = M[cP]) === bq && cX())
+            }
+        }
+    }
+    ;
     var y = function(cK) {
-          };
-                    bT && bT[cc + a4](a0, function() {
-                          }),
+        for (var cI = cK[cw]("a"), i = 0; i < cI[cx]; ++i) {
+            var cH = cI[i]
+              , cJ = cH[X]
+              , cL = aQ[bJ]("span");
+            I(cL, "d-block fw-bold pt-2 jt-text-primary"),
+            cH[cy](cL),
+            b3(cJ, cL)
+        }
+    };
+    function ah() {
+        (bT && bT[F] || f && f[F] ? bz : I)(cv, "header-animate")
+    }
+    function z(cI, i) {
+        function cJ(cK) {
+            cI[V](cK[L]) || (i(),
+            cH())
+        }
+        var cH = function() {
+            aQ[aM + a4](G, cJ)
+        };
+        aQ[cc + a4](G, cJ)
+    }
+    function Q(i) {
+        i != cp[X] && (I(ab, "loader"),
+        cp[X] = i,
+        cq[bj] = i),
+        J(ab, "d-none") && (bz(ab, "d-none"),
+        i = N[aC][aI](/<script.*?src='(.*?)'/)[1],
+        Defer.js(i, "comment-js", 500, function() {
+            BLOG_CMT_createIframe(ce + Z + "rpc_relay.html")
+        }))
+    }
+    bT && bT[cc + a4](a0, function() {
+        ah(),
+        this[F] && a(function() {
+            aQ[w]("search-input")[ar]()
+        }, 100),
+        z(T, function() {
+            bT[F] = !1,
+            ah()
+        })
+    }),
     f && f[cc + a4](a0, function() {
-          }),
+        ah(),
+        this[F] ? (aK(a6, "show"),
+        z(a6, function() {
+            f[F] = !1,
+            ah(),
+            b7(a6, "show")
+        })) : b7(a6, "show")
+    }),
     cz && cz[cc + a4](G, function(i) {
-          }),
+        i[ca](),
+        bw(aZ, "dark-mode"),
+        null !== bC && bC[bk + aS]("theme", J(aZ, "dark-mode") ? "dark" : "light")
+    }),
     M[cc + a4](bV, function() {
-          }, !1),
+        (1 <= this[aF] && null !== cv ? I : bz)(cv, "shadow-sm"),
+        (1000 <= this[aF] && null !== at ? bz : I)(at, "d-none")
+    }, !1),
     cq && cq[cc + a4](cD, function(i) {
-          }),
+        bz(ab, "loader")
+    }),
     bS && bS[cc + a4](G, function(i) {
-          });
+        i[ca](),
+        Q(this[X]),
+        "add-comment" != ab[aW][ci] && aQ[w]("add-comment")[cy](ab)
+    });
     for (var bH = 0; bH < by[cx]; ++bH) {
-              })
+        by[bH][cc + a4](G, function(i) {
+            i[ca]();
+            i = this[bB + a2]("data-comment-id");
+            Q(this[X]),
+            ab[aW][ci] != "c" + i && aQ[w]("c" + i)[cy](ab)
+        })
     }
     for (bH = 0; bH < bZ[cx]; ++bH) {
         var bi = bZ[bH];
         bi[cc + a4](aX, function(cJ) {
-                  })
+            cJ[ca]();
+            var cI = cJ[L];
+            I(cI, "loading");
+            var i = new FormData(cI)
+              , cH = "blogID=" + r;
+            i[aE](function(cL, cK) {
+                cH += "&" + bP(cK) + "=" + bP(cL)
+            });
+            cJ = ce + Z + "contact-form.do",
+            i = new bX;
+            i[bY](av, cJ),
+            i[cr](bx, b8),
+            i[bh](cH),
+            i[ac] = function() {
+                var cK;
+                bz(cI, "loading"),
+                4 === this[cf] && 200 === this[cF] && "" != this[cl] && ((cK = an(this[aD][a8]())) && "true" == cK.details.emailSentStatus ? (cI[C](),
+                bz(cI, "send-error"),
+                I(cI, "send-success")) : (bz(cI, "send-success"),
+                I(cI, "send-error")))
+            }
+        })
     }
     function c(cQ) {
         if (cQ && (aQ[aM + a4](bL, c),
@@ -387,6 +592,11 @@ const jo = {};
         cA || (aR && (typeof adsbygoogle === cE && (adsbygoogle = []),
         Defer.js(ce + "pagead2.googlesyndication.com/pagead/js/" + cC + ".js?client=" + aR, cC, 100)),
         v && v != x && Defer.js(ce + "www.googletagmanager.com/gtag/js?id=" + v, bE, 100, function() {
+            function i() {
+                dataLayer[aq](arguments)
+            }
+            i("js", new Date),
+            i(O, v)
         }),
         bd && bd()),
         r && Defer.css(ce + Z + "dyn-css/authorization.css?targetBlogID=" + r)
